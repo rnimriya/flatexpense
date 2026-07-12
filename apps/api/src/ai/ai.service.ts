@@ -28,7 +28,7 @@ export class AiService {
       orderBy: { date: 'desc' },
       take: 10,
       include: { 
-        paidBy: { select: { firstName: true, lastName: true } },
+        payer: { select: { firstName: true, lastName: true } },
         splits: { select: { amount: true, user: { select: { firstName: true } } } },
         category: true
       }
@@ -44,7 +44,7 @@ export class AiService {
     
     contextStr += `Recent Expenses (last 10):\n`;
     expenses.forEach(e => {
-      contextStr += `- ${e.title} ($${e.amount}) on ${e.date.toLocaleDateString()}. Paid by ${e.paidBy.firstName}.\n`;
+      contextStr += `- ${e.title} ($${e.amount}) on ${e.date.toLocaleDateString()}. Paid by ${e.payer.firstName}.\n`;
     });
 
     contextStr += `\nPending Chores:\n`;
