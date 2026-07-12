@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserButton } from "@clerk/nextjs";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { subscribeToDemoMode } from "@/lib/api-client";
 
 export function TopNav() {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+
+  useEffect(() => {
+    return subscribeToDemoMode(setIsDemoMode);
+  }, []);
 
   const mockNotifications = [
     { id: 1, text: "Alex assigned you: Take out the trash", time: "2m ago", unread: true },
@@ -23,6 +29,13 @@ export function TopNav() {
           <Menu className="w-5 h-5" />
         </Button>
         <h2 className="text-lg font-semibold tracking-tight hidden md:block">Overview</h2>
+        
+        {isDemoMode && (
+          <div className="flex items-center gap-2 bg-yellow-500/10 text-yellow-600 border border-yellow-500/20 px-3 py-1 rounded-full text-xs font-semibold ml-4 shadow-sm animate-pulse">
+            <AlertTriangle className="w-3.5 h-3.5" />
+            Database Offline - Demo Mode Active
+          </div>
+        )}
       </div>
       
       <div className="flex items-center gap-4 relative">

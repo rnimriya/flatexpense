@@ -19,6 +19,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth, useUser } from "@clerk/nextjs";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function ChoresPage() {
   const { getToken } = useAuth();
@@ -40,9 +42,9 @@ export default function ChoresPage() {
       const token = await getToken();
       
       const [choresRes, leaderRes, roomRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/chores/default`, { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/chores/leaderboard/default`, { headers: { 'Authorization': `Bearer ${token}` } }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses/roommates/default`, { headers: { 'Authorization': `Bearer ${token}` } })
+        fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/chores/default`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/chores/leaderboard/default`, { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses/roommates/default`, { headers: { 'Authorization': `Bearer ${token}` } })
       ]);
 
       const [cData, lData, rData] = await Promise.all([
@@ -69,7 +71,7 @@ export default function ChoresPage() {
   const handleToggleComplete = async (chore: any) => {
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chores/${chore.id}/complete`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/chores/${chore.id}/complete`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -87,7 +89,7 @@ export default function ChoresPage() {
     if (!confirm("Delete this chore?")) return;
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chores/${id}`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/chores/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -102,7 +104,7 @@ export default function ChoresPage() {
     setIsSubmitting(true);
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chores`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/chores`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

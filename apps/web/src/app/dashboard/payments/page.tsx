@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function PaymentsPage() {
   const { getToken } = useAuth();
@@ -17,7 +19,7 @@ export default function PaymentsPage() {
   const fetchPayments = async () => {
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/default`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/payments/default`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();

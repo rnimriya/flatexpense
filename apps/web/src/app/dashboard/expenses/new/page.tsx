@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function NewExpensePage() {
   const router = useRouter();
@@ -28,7 +30,7 @@ export default function NewExpensePage() {
     const fetchRoommates = async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses/roommates/default`, {
+        const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses/roommates/default`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -84,7 +86,7 @@ export default function NewExpensePage() {
 
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

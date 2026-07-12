@@ -1,6 +1,8 @@
 import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 import { auth } from '@clerk/nextjs/server';
+import { fetchApi } from '@/lib/api-client';
+
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
 
     let contextString = "Demo Apartment Context: 4 active roommates (Alice, Bob, Charlie, You). Total expenses this month: $1294.00. Upcoming bill: Electric ($120.50). You owe Bob $45.50.";
     try {
-      const contextRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ai/context`, {
+      const contextRes = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/ai/context`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (contextRes.ok) {

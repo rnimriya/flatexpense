@@ -15,6 +15,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@clerk/nextjs";
 import { 
+import { fetchApi } from '@/lib/api-client';
+
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend
 } from "recharts";
@@ -30,7 +32,7 @@ export default function AnalyticsPage() {
     const fetchAnalytics = async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/summary`, {
+        const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/analytics/summary`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const result = await res.json();

@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function JoinApartmentPage() {
   const { token } = useParams();
@@ -24,7 +26,7 @@ export default function JoinApartmentPage() {
           return;
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments/invites/${token}/accept`, {
+        const response = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments/invites/${token}/accept`, {
           method: 'POST',
           headers: { 
             'Authorization': `Bearer ${jwt}` 

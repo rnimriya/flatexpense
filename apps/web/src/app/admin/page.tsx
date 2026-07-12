@@ -5,6 +5,8 @@ import { useAuth } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { Users, Home, DollarSign, Activity, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function AdminDashboard() {
   const { getToken, isLoaded, isSignedIn } = useAuth();
@@ -28,9 +30,9 @@ export default function AdminDashboard() {
         const headers = { 'Authorization': `Bearer ${token}` };
 
         const [statsRes, usersRes, aptsRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/stats`, { headers }),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/users`, { headers }),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/apartments`, { headers })
+          fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/admin/stats`, { headers }),
+          fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/admin/users`, { headers }),
+          fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/admin/apartments`, { headers })
         ]);
 
         if (statsRes.status === 403) {

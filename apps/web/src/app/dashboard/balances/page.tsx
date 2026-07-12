@@ -6,6 +6,8 @@ import { ArrowRight, Wallet, Check, CreditCard, Banknote, X } from "lucide-react
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth, useUser } from "@clerk/nextjs";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function BalancesPage() {
   const { getToken } = useAuth();
@@ -21,7 +23,7 @@ export default function BalancesPage() {
   const fetchDebts = async () => {
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/settlements/default`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/settlements/default`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -48,7 +50,7 @@ export default function BalancesPage() {
     
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/payments`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

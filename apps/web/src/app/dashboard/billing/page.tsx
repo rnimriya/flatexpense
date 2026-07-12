@@ -6,6 +6,8 @@ import { useAuth } from "@clerk/nextjs";
 import { Check, CreditCard, Zap, Crown, Loader2, Sparkles } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { fetchApi } from '@/lib/api-client';
+
 
 const PLANS = [
   {
@@ -47,7 +49,7 @@ export default function BillingPage() {
     const fetchSub = async () => {
       try {
         const token = await getToken();
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/billing/status`, {
+        const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/billing/status`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -67,7 +69,7 @@ export default function BillingPage() {
     setActionLoading(tier);
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/billing/checkout`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/billing/checkout`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -90,7 +92,7 @@ export default function BillingPage() {
     setActionLoading('portal');
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/billing/portal`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/billing/portal`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });

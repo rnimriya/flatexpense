@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Users, Copy, Check, UserMinus, Crown, LogOut, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { fetchApi } from '@/lib/api-client';
+
 
 export function ApartmentSettings() {
   const { getToken } = useAuth();
@@ -23,7 +25,7 @@ export function ApartmentSettings() {
   const fetchApartments = async () => {
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -46,7 +48,7 @@ export function ApartmentSettings() {
     setInviteLoading(true);
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/invites`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/invites`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -83,7 +85,7 @@ export function ApartmentSettings() {
       // We need the internal DB userId for the target.
       // Wait, the API requires the internal userId.
       // In activeApartment.members, we have member.userId.
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/members/${targetUserId}`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/members/${targetUserId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -105,7 +107,7 @@ export function ApartmentSettings() {
     
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/transfer-ownership/${newOwnerId}`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments/${activeApartment.id}/transfer-ownership/${newOwnerId}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });

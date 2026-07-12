@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 import { useAuth } from "@clerk/nextjs";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function ExpensesPage() {
   const { getToken } = useAuth();
@@ -20,7 +22,7 @@ export default function ExpensesPage() {
   const fetchExpenses = async () => {
     try {
       const token = await getToken();
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses/default`, {
+      const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses/default`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -47,7 +49,7 @@ export default function ExpensesPage() {
     if (selectedIds.size === 0) return;
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses/bulk-delete`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses/bulk-delete`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ export default function ExpensesPage() {
             variant="outline"
             onClick={async () => {
               const token = await getToken();
-              const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/expenses/export/default`, {
+              const res = await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/expenses/export/default`, {
                 headers: { 'Authorization': `Bearer ${token}` }
               });
               const blob = await res.blob();

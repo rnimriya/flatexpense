@@ -8,6 +8,8 @@ import { Home, Users, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { fetchApi } from '@/lib/api-client';
+
 
 export default function OnboardingPage() {
   const router = useRouter();
@@ -23,7 +25,7 @@ export default function OnboardingPage() {
     setLoading(true);
     try {
       const token = await getToken();
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/apartments`, {
+      await fetchApi(`${process.env.NEXT_PUBLIC_API_URL}/apartments`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
